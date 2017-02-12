@@ -44,13 +44,21 @@ for item in li:
     print (item.text)
 
 
-
-
 #### Problem 3 ####
 print('\n*********** PROBLEM 3 ***********')
 print("Mark's page -- Alt tags\n")
 
 ### Your Problem 3 solution goes here
+url3 = 'http://newmantaylor.com/gallery.html'
+html3 = urllib.request.urlopen(url3, context=ctx).read()
+soup3 = BeautifulSoup(html3, 'html.parser')
+img = soup3('img')
+for item in img:
+    try:
+        print (item['alt'])
+    except:
+        print ("No alternative text provided!")
+
 
 
 #### Problem 4 ####
