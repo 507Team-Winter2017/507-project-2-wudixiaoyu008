@@ -66,3 +66,35 @@ print('\n*********** PROBLEM 4 ***********')
 print("UMSI faculty directory emails\n")
 
 ### Your Problem 4 solution goes here
+url4 = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=4'
+html4 = urllib.request.urlopen(url4, context=ctx).read()
+soup4 = BeautifulSoup(html4, 'html.parser')
+
+# find pager-next, if exist link, go to the page, append to a soup_object list
+soup_object = []
+soup_object.append(soup4)
+flag = True
+
+while flag:
+    page_next = soup4.find(class_='pager-next')
+    if page_next.a:
+        base_url = "https://www.si.umich.edu"
+        add_url = page_next.a['href']
+        url4 = base_url + add_url
+        html4 = urllib.request.urlopen(url4, context=ctx).read()
+        soup4 = BeautifulSoup(html4, 'html.parser')
+        soup_object.append(soup4)
+    else:
+        flag = False
+
+# for each soup object, find contact details, goto that page, find email, count
+count = 0
+for item in soup_object:
+    contact = item.find_all(class_='field-name-contact-details')
+    for email in contact:
+        email_url = base_url + email.a['href']
+        email_html = urllib.request.urlopen(email_url, context=ctx).read()
+        email_soup = BeautifulSoup(email_html, 'html.parser')
+        final_email = email_soup.find(class_="field-name-field-person-email")
+        count = count + 1
+        print (count, final_email.a.text)
