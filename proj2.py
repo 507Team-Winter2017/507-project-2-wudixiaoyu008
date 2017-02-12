@@ -35,6 +35,15 @@ print('\n*********** PROBLEM 2 ***********')
 print('Michigan Daily -- MOST READ\n')
 
 ### Your Problem 2 solution goes here
+url2 = "https://www.michigandaily.com/"
+html2 = urllib.request.urlopen(url2, context=ctx).read()
+soup2 = BeautifulSoup(html2, 'html.parser')
+mostread = soup2.find(class_='pane-mostread')
+li = mostread('li')
+for item in li:
+    print (item.text)
+
+
 
 
 #### Problem 3 ####
